@@ -7,6 +7,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
+import java.net.URI;
+import java.net.URL;
+
 /**
  * 用于处理客户端发送的请求
  *
@@ -24,6 +27,17 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
         if (msg instanceof HttpRequest) {
+            System.out.println("执行...");
+            // 由于浏览器访问了两次，下面的代码会执行两次，为了不让下面的代码执行两次，必须对请求的地址进行判断
+            // 浏览器访问两次的原因是：它第二次，会进行一个网站图标的请求 http://localhost:8888/favicon.ico
+            // 基本每个网站，都会有这样一次请求
+            HttpRequest request = (HttpRequest) msg;
+            System.out.println("请求方法名称：" + request.method().name());
+            URI uri = new URI(request.uri());
+            if ("/favicon.ico".equals(uri.getPath())) {
+                System.out.println("请求/favicon.ico");
+                return;
+            }
 
             // ByteBuf 极为重要。使用如下代码是构建出向客户端返回的内容。
             ByteBuf content = Unpooled.copiedBuffer("hello netty", CharsetUtil.UTF_8);
