@@ -8,7 +8,6 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
 import java.net.URI;
-import java.net.URL;
 
 /**
  * 用于处理客户端发送的请求
@@ -20,7 +19,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
     /**
      * 读取客户端发送过来的请求，并向客户端返回相应的方法
      *
-     * @param ctx
+     * @param ctx 用于获取 Channel 对象中的上下文
      * @param msg
      * @throws Exception
      */
