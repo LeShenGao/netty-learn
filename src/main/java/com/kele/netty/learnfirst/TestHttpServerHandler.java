@@ -47,6 +47,37 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
             // writeAndFlush 使用该方法，能将响应给客户端的信息写入到"缓存"中，也能"刷新缓冲区"
             ctx.writeAndFlush(response);
+            ctx.channel().close();
         }
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("handler added");
+        super.handlerAdded(ctx);
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channel registered");
+        super.channelRegistered(ctx);
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channel unregistered");
+        super.channelUnregistered(ctx);
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channel active");
+        super.channelActive(ctx);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channel inactive");
+        super.channelInactive(ctx);
     }
 }
